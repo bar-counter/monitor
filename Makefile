@@ -6,7 +6,7 @@ TOP_DIR := $(shell pwd)
 # 	@ echo target file not found
 # endif
 
-DIST_VERSION := 1.0.0
+DIST_VERSION := 1.0.1
 DIST_OS := linux
 DIST_ARCH := amd64
 

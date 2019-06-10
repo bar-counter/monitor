@@ -51,7 +51,7 @@ make dev
 go get -v github.com/bar-counter/monitor
 
 # dep go 1.7 -> 1.11
-dep ensure --add github.com/bar-counter/monitor@1.0.0
+dep ensure --add github.com/bar-counter/monitor@1.0.1
 dep ensure -v
 ```
 
