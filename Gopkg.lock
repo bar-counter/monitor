@@ -18,11 +18,11 @@
   packages = [
     ".",
     "binding",
-    "json",
+    "internal/json",
     "render"
   ]
-  revision = "b869fe1415e4b9eb52f247441830d502aece2d4d"
-  version = "v1.3.0"
+  revision = "b75d67cd51eb53c3c3a2fc406524c940021ffbda"
+  version = "v1.4.0"
 
 [[projects]]
   name = "github.com/go-ole/go-ole"
@@ -72,8 +72,8 @@
     "load",
     "mem"
   ]
-  revision = "fa9845945e5b5c6ffb19b436586ff702a30417c5"
-  version = "v2.19.04"
+  revision = "5335e3fd506df4cb63de0a8239c7461d23063be6"
+  version = "v2.19.05"
 
 [[projects]]
   name = "github.com/ugorji/go"
@@ -105,6 +105,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e14acc059ba5e065cf7dc64c85259ee6ae0662f20ef0dd3cdc60b156a4f2b3d8"
+  inputs-digest = "b41555a0229c7c1cee23fe7555892e285ac806d347df55a9676186ffa665ebcf"
   solver-name = "gps-cdcl"
   solver-version = 1
