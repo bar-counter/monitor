@@ -1,21 +1,23 @@
 package monitor
 
 import (
+	"github.com/bar-counter/monitor/debug"
 	"github.com/bar-counter/monitor/status"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 const (
-	// DefaultPrefix url prefix of pprof
 	DefaultStatusPrefix = "/status"
 	DefaultDebugPrefix  = "/debug"
-	DefaultVarsPrefix   = "/vars"
-	DefaultPPROFPrefix  = "/pprof"
+	// DefaultVarsPrefix url prefix of /debug/vars
+	DefaultVarsPrefix = "/vars"
+	// DefaultPrefix url prefix of /debug/pprof
+	DefaultPPROFPrefix = "/pprof"
 )
 
 type Cfg struct {
-	APIVersion   string
+	APIBase      string
 	Status       bool
 	StatusPrefix string
 	Debug        bool
@@ -29,7 +31,7 @@ var DefaultCfg *Cfg
 
 func initDefaultCfg() *Cfg {
 	cfg := Cfg{
-		APIVersion:   "/v1",
+		APIBase:      "",
 		Status:       false,
 		StatusPrefix: DefaultStatusPrefix,
 		Debug:        false,
@@ -43,7 +45,7 @@ func initDefaultCfg() *Cfg {
 
 func Register(r *gin.Engine, cfg *Cfg) error {
 	checkCfg(cfg)
-	mGroup := r.Group(cfg.APIVersion)
+	mGroup := r.Group(cfg.APIBase)
 	{
 		if cfg.Status {
 			mGroup.GET(cfg.StatusPrefix+"/health", status.HealthCheck)
@@ -52,7 +54,7 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 			mGroup.GET(cfg.StatusPrefix+"/cpu", status.CPUCheck)
 		}
 		if cfg.Debug {
-
+			mGroup.GET(cfg.DebugPrefix, debug.GetMonitorRunningStats)
 		}
 	}
 	return nil
@@ -60,8 +62,8 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 
 func checkCfg(cfg *Cfg) {
 	defaultCfg := initDefaultCfg()
-	if cfg.APIVersion != "" {
-		cfg.APIVersion = defaultCfg.APIVersion
+	if cfg.APIBase != "" {
+		cfg.APIBase = defaultCfg.APIBase
 	}
 	if cfg.StatusPrefix != "" {
 		cfg.StatusPrefix = defaultCfg.StatusPrefix
