@@ -48,10 +48,13 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 	mGroup := r.Group(cfg.APIBase)
 	{
 		if cfg.Status {
-			mGroup.GET(cfg.StatusPrefix+"/health", status.HealthCheck)
-			mGroup.GET(cfg.StatusPrefix+"/disk", status.DiskCheck)
-			mGroup.GET(cfg.StatusPrefix+"/ram", status.RAMCheck)
-			mGroup.GET(cfg.StatusPrefix+"/cpu", status.CPUCheck)
+			statusGroup := mGroup.Group(cfg.StatusPrefix)
+			{
+				statusGroup.GET("/health", status.HealthCheck)
+				statusGroup.GET("/disk", status.DiskCheck)
+				statusGroup.GET("/ram", status.RAMCheck)
+				statusGroup.GET("/cpu", status.CPUCheck)
+			}
 		}
 		if cfg.Debug {
 			mGroup.GET(cfg.DebugPrefix, debug.GetMonitorRunningStats)
@@ -62,19 +65,19 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 
 func checkCfg(cfg *Cfg) {
 	defaultCfg := initDefaultCfg()
-	if cfg.APIBase != "" {
+	if cfg.APIBase == "" {
 		cfg.APIBase = defaultCfg.APIBase
 	}
-	if cfg.StatusPrefix != "" {
+	if cfg.StatusPrefix == "" {
 		cfg.StatusPrefix = defaultCfg.StatusPrefix
 	}
-	if cfg.DebugPrefix != "" {
+	if cfg.DebugPrefix == "" {
 		cfg.DebugPrefix = defaultCfg.DebugPrefix
 	}
-	if cfg.VarsPrefix != "" {
+	if cfg.VarsPrefix == "" {
 		cfg.VarsPrefix = defaultCfg.VarsPrefix
 	}
-	if cfg.PProfPrefix != "" {
+	if cfg.PProfPrefix == "" {
 		cfg.PProfPrefix = defaultCfg.PProfPrefix
 	}
 	DefaultCfg = cfg
