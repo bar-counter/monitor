@@ -5,9 +5,9 @@
 - [demo](#demo)
 - [use middleware](#use-middleware)
   - [gin server status](#gin-server-status)
-  - [debug](#debug)
+  - [gin server debug](#gin-server-debug)
     - [vars](#vars)
-  - [pprof](#pprof)
+    - [pprof](#pprof)
 
 <!-- /TOC -->
 
@@ -57,7 +57,8 @@ dep ensure -v
 
 ## gin server status
 
-- [https://github.com/shirou/gopsutil](https://github.com/shirou/gopsutil) for watch system status
+- use lib [https://github.com/shirou/gopsutil](https://github.com/shirou/gopsutil) for watch system status
+- [see example statusdemo.go](example/status/statusdemo.go)
 
 ```go
 	r := gin.Default()
@@ -94,7 +95,9 @@ curl 'http://127.0.0.1:38000/status/hardware/cpu' \                             
 > StatusPrefix default is `/status` you can change by your self
 > StatusHardwarePrefix default is `/hardware`
 
-## debug
+## gin server debug
+
+- [see example debugdemo.go](example/debug/debugdemo.go)
 
 ### vars
 
@@ -156,9 +159,10 @@ curl 'http://127.0.0.1:38000/debug/vars' \                                      
 
 `DebugMiddleware` can use BasicAuth or other Middleware
 
-## pprof
+### pprof
 
 - pprof must Debug open
+- [see example pprofdemo.go](example/pprof/pprofdemo.go)
 
 ```go
 	r := gin.Default()
