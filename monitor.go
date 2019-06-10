@@ -2,9 +2,9 @@ package monitor
 
 import (
 	"github.com/bar-counter/monitor/debug"
+	"github.com/bar-counter/monitor/pprof"
 	"github.com/bar-counter/monitor/status"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 const (
@@ -26,6 +26,7 @@ type Cfg struct {
 	StatusHardwarePrefix string
 	Debug                bool
 	DebugPrefix          string
+	DebugMiddleware      gin.HandlerFunc
 	VarsPrefix           string
 	PProf                bool
 	PProfPrefix          string
@@ -69,9 +70,17 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 			}
 		}
 		if cfg.Debug {
-			debugGroup := mGroup.Group(cfg.DebugPrefix)
+			var debugGroup *gin.RouterGroup
+			if cfg.DebugMiddleware != nil {
+				debugGroup = mGroup.Group(cfg.DebugPrefix, cfg.DebugMiddleware)
+			} else {
+				debugGroup = mGroup.Group(cfg.DebugPrefix)
+			}
 			{
 				debugGroup.GET(cfg.VarsPrefix, debug.GetMonitorRunningStats)
+			}
+			if cfg.PProf {
+				pprof.OnBind(debugGroup, cfg.PProfPrefix)
 			}
 		}
 	}
@@ -99,11 +108,4 @@ func checkCfg(cfg *Cfg) {
 		cfg.PProfPrefix = defaultCfg.PProfPrefix
 	}
 	DefaultCfg = cfg
-}
-
-func handler(h http.HandlerFunc) gin.HandlerFunc {
-	handler := http.HandlerFunc(h)
-	return func(c *gin.Context) {
-		handler.ServeHTTP(c.Writer, c.Request)
-	}
 }

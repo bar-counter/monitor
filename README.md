@@ -52,6 +52,10 @@ curl 'http://127.0.0.1:38000/status/hardware/cpu' \                             
 	monitorCfg := &monitor.Cfg{
 		Debug: true,
 		//DebugPrefix: "/debug",
+		DebugMiddleware: gin.BasicAuth(gin.Accounts{
+			"admin": "admin",
+			"user":  "user",
+		}),
 	}
 	err := monitor.Register(r, monitorCfg)
 	if err != nil {
@@ -98,3 +102,45 @@ curl 'http://127.0.0.1:38000/debug/vars' \                                      
 | run_time | | count server run time |
 
 > more info see `go doc expvar`
+
+`DebugMiddleware` can use BasicAuth or other Middleware
+
+## pprof
+
+- pprof must Debug open
+
+```go
+	r := gin.Default()
+	monitorCfg := &monitor.Cfg{
+		Status: true,
+		//StatusPrefix: "/status",
+		StatusHardware: true,
+		//StatusHardwarePrefix: "/hardware",
+		Debug: true,
+		//DebugPrefix: "/debug",
+		DebugMiddleware: gin.BasicAuth(gin.Accounts{
+			"admin": "admin",
+			"user":  "user",
+		}),
+		PProf: true,
+		//PProfPrefix: "/pprof",
+	}
+	err := monitor.Register(r, monitorCfg)
+	if err != nil {
+		fmt.Printf("monitor register err %v\n", err)
+		return
+	}
+	r.Run(":38000")
+```
+
+then see at [http://127.0.0.1:38000/debug/pprof/](http://127.0.0.1:38000/debug/pprof/)
+or use cli to
+
+```bash
+# cpu
+go tool pprof http://localhost:38000/debug/pprof/profile
+# mem
+go tool pprof http://localhost:38000/debug/pprof/heap
+# block
+go tool pprof http://localhost:38000/debug/pprof/block
+```

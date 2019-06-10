@@ -15,6 +15,12 @@ func main() {
 		//StatusHardwarePrefix: "/hardware",
 		Debug: true,
 		//DebugPrefix: "/debug",
+		//DebugMiddleware: gin.BasicAuth(gin.Accounts{
+		//	"admin": "admin",
+		//	"user":  "user",
+		//}),
+		PProf: true,
+		//PProfPrefix: "/pprof",
 	}
 	err := monitor.Register(r, monitorCfg)
 	if err != nil {
