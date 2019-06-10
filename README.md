@@ -1,8 +1,21 @@
+<!-- TOC -->
+
+- [for what](#for-what)
+  - [dependInfo](#dependinfo)
+- [demo](#demo)
+- [use middleware](#use-middleware)
+  - [gin server status](#gin-server-status)
+  - [debug](#debug)
+    - [vars](#vars)
+  - [pprof](#pprof)
+
+<!-- /TOC -->
+
 # for what
 
 - this project used to gin api server status monitor
 
-support check 
+support check
 - `health`
 - `Hardware`
 	- disk
@@ -127,7 +140,7 @@ curl 'http://127.0.0.1:38000/debug/vars' \                                      
 }
 ```
 
-| item | doc  | desc | 
+| item | doc  | desc |
 |:-----|:-----|:-----|
 | cgo | go doc runtime.NumCgoCall |
 | cmdline |  | server run cmd |
