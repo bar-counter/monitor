@@ -60,13 +60,13 @@ checkReleaseOSDistPath:
 	@if [ ! -d ${ROOT_REPO_OS_DIST_PATH} ]; then mkdir -p ${ROOT_REPO_OS_DIST_PATH} && echo "~> mkdir ${ROOT_REPO_OS_DIST_PATH}"; fi
 
 buildMain:
-	@go build -o build/main main.go
+	@go build -o build/main example/pprof/pprofdemo.go
 
 buildARCH:
 	@GOOS=$(DIST_OS) GOARCH=$(DIST_ARCH) go build -o build/main main.go
 
 dev: buildMain
-	-./build/main -c ./conf/config.yaml
+	-./build/main
 
 help:
 	@echo "make init - check base env of this project"

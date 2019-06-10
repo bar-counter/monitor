@@ -1,13 +1,46 @@
-## for what
+# for what
 
-- this project used to gin api server
+- this project used to gin api server status monitor
+
+support check 
+- `health`
+- `Hardware`
+	- disk
+	- cpu
+	- ram
+- `debug`
+	- run vars
+	- pprof
+
+## dependInfo
 
 | lib | url | version |
 |:-----|:-----|:-----|
 | gin | https://github.com/gin-gonic/gin | 1.4.0 |
 | gopsutil | https://github.com/shirou/gopsutil | 2.19.05 |
 
-# use lib
+# demo
+
+```bash
+make init
+make checkDepends
+# ensure right then
+make dev
+# and open url
+# health http://127.0.0.1:38000/status/health
+# pprof http://127.0.0.1:38000/debug/pprof/
+```
+
+# use middleware
+
+```bash
+# go get
+go get -v github.com/bar-counter/monitor
+
+# dep go 1.7 -> 1.11
+dep --add github.com/bar-counter/monitor@1.0.0
+dep ensure -v
+```
 
 ## gin server status
 
