@@ -12,13 +12,13 @@ import (
 
 // let full vars publish at expvar
 func init() {
-	expvar.Publish("RunTime", expvar.Func(calculateUptime))
-	expvar.Publish("version", expvar.Func(currentGoVersion))
-	expvar.Publish("cores", expvar.Func(getNumCPU))
-	expvar.Publish("os", expvar.Func(getGoOS))
 	expvar.Publish("cgo", expvar.Func(getNumCgoCall))
+	expvar.Publish("gc_pause", expvar.Func(getLastGCPauseTime))
+	expvar.Publish("go_version", expvar.Func(currentGoVersion))
 	expvar.Publish("goroutine", expvar.Func(getNumGoroutine))
-	expvar.Publish("gcpause", expvar.Func(getLastGCPauseTime))
+	expvar.Publish("os", expvar.Func(getGoOS))
+	expvar.Publish("os_cores", expvar.Func(getNumCPU))
+	expvar.Publish("run_time", expvar.Func(calculateUptime))
 }
 
 func GetMonitorRunningStats(c *gin.Context) {

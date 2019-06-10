@@ -69,7 +69,10 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 			}
 		}
 		if cfg.Debug {
-			mGroup.GET(cfg.DebugPrefix, debug.GetMonitorRunningStats)
+			debugGroup := mGroup.Group(cfg.DebugPrefix)
+			{
+				debugGroup.GET(cfg.VarsPrefix, debug.GetMonitorRunningStats)
+			}
 		}
 	}
 	return nil

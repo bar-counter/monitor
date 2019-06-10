@@ -25,7 +25,7 @@ const (
 // @Router /status/health [get]
 func HealthCheck(c *gin.Context) {
 	message := "OK"
-	c.String(http.StatusOK, "\n"+message)
+	c.String(http.StatusOK, message)
 }
 
 type Disk struct {
