@@ -8,11 +8,13 @@
 
 ```go
 	r := gin.Default()
-	cfg := &monitor.Cfg{
-		Status:       true,
+	monitorCfg := &monitor.Cfg{
+		Status: true,
 		//StatusPrefix: "/status",
+		StatusHardware: true,
+		//StatusHardwarePrefix: "/hardware",
 	}
-	err := monitor.Register(r, cfg)
+	err := monitor.Register(r, monitorCfg)
 	if err != nil {
 		fmt.Printf("monitor register err %v\n", err)
 		return
@@ -26,13 +28,13 @@ and you can use to get status of server
 curl 'http://127.0.0.1:38000/status/health' \                                                                                                                                                                          [3:34:08]
   -X GET
 
-curl 'http://127.0.0.1:38000/status/disk' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/hardware/disk' \                                                                                                                                                                          [3:34:08]
   -X GET
 
-curl 'http://127.0.0.1:38000/status/ram' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/hardware/ram' \                                                                                                                                                                          [3:34:08]
   -X GET
 
-curl 'http://127.0.0.1:38000/status/cpu' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/hardware/cpu' \                                                                                                                                                                          [3:34:08]
   -X GET
 ```
 

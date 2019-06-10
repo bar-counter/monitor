@@ -8,11 +8,13 @@ import (
 
 func main() {
 	r := gin.Default()
-	cfg := &monitor.Cfg{
+	monitorCfg := &monitor.Cfg{
 		Status: true,
 		//StatusPrefix: "/status",
+		StatusHardware: true,
+		//StatusHardwarePrefix: "/hardware",
 	}
-	err := monitor.Register(r, cfg)
+	err := monitor.Register(r, monitorCfg)
 	if err != nil {
 		fmt.Printf("monitor register err %v\n", err)
 		return
