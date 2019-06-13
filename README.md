@@ -61,6 +61,10 @@ dep ensure -v
 - [see example statusdemo.go](example/status/statusdemo.go)
 
 ```go
+import (
+	"github.com/bar-counter/monitor"
+)
+
 	r := gin.Default()
 	monitorCfg := &monitor.Cfg{
 		Status: true,
@@ -102,6 +106,10 @@ curl 'http://127.0.0.1:38000/status/hardware/cpu' \                             
 ### vars
 
 ```go
+import (
+	"github.com/bar-counter/monitor"
+)
+
 	r := gin.Default()
 	monitorCfg := &monitor.Cfg{
 		Debug: true,
@@ -165,6 +173,10 @@ curl 'http://127.0.0.1:38000/debug/vars' \                                      
 - [see example pprofdemo.go](example/pprof/pprofdemo.go)
 
 ```go
+import (
+	"github.com/bar-counter/monitor"
+)
+
 	r := gin.Default()
 	monitorCfg := &monitor.Cfg{
 		Status: true,
