@@ -1,7 +1,7 @@
 # this file must use as base Makefile
 
 modVerify:
-	# in GOPATH must use GO111MODULE=on go mod init to init
+	# in GOPATH must use [ GO111MODULE=on go mod ] to use
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod verify
 
 modDownload:
