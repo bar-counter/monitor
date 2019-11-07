@@ -36,4 +36,4 @@
 
 [[constraint]]
   name = "github.com/shirou/gopsutil"
-  version = "2.19.05"
+  version = "2.19.10"

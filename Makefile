@@ -6,7 +6,7 @@ TOP_DIR := $(shell pwd)
 # 	@ echo target file not found
 # endif
 
-DIST_VERSION := 1.0.1
+DIST_VERSION := 1.1.0
 DIST_OS := linux
 DIST_ARCH := amd64
 
@@ -18,7 +18,12 @@ ROOT_REPO_DIST_PATH ?= $(ROOT_DIST)/release/$(DIST_VERSION)
 ROOT_REPO_OS_DIST_PATH ?= $(ROOT_DIST)/$(DIST_OS)/release/$(DIST_VERSION)
 
 ROOT_LOG_PATH ?= ./log
-ROOT_SWAGGER_PATH ?= ./docs
+
+# can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
+ENV_GO_PROXY ?= https://goproxy.io/
+
+# include
+include MakeGoMod.mk
 
 checkEnvGo:
 ifndef GOPATH
@@ -26,17 +31,16 @@ ifndef GOPATH
 	exit 1
 endif
 
-init: checkEnvGo
+# check must run environment
+init:
 	@echo "~> start init this project"
 	@echo "-> check version"
 	go version
 	@echo "-> check env golang"
 	go env
-	@echo "-> check env dep fix as [ go get -v -u github.com/golang/dep/cmd/dep ]"
-	which dep
-
-checkDepends: checkEnvGo
-	-dep ensure -v
+	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download
+	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
+	@echo "~> you can use [ make help ] see more task"
 
 cleanBuild:
 	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi
@@ -59,18 +63,21 @@ checkReleaseDistPath:
 checkReleaseOSDistPath:
 	@if [ ! -d ${ROOT_REPO_OS_DIST_PATH} ]; then mkdir -p ${ROOT_REPO_OS_DIST_PATH} && echo "~> mkdir ${ROOT_REPO_OS_DIST_PATH}"; fi
 
-buildMain:
-	@go build -o build/main example/pprof/pprofdemo.go
+buildMain: dep cleanBuild
+	@go build -o $(ROOT_BUILD_PATH)/main example/pprof/pprofdemo.go
 
-buildARCH:
-	@GOOS=$(DIST_OS) GOARCH=$(DIST_ARCH) go build -o build/main main.go
+buildARCH: dep cleanBuild
+	@GOOS=$(DIST_OS) GOARCH=$(DIST_ARCH) go build -o $(ROOT_BUILD_PATH)/main main.go
 
 dev: buildMain
-	-./build/main
+	-$(ROOT_BUILD_PATH)/main
 
-help:
-	@echo "make init - check base env of this project"
-	@echo "make checkDepends - check depends of project"
-	@echo "make clean - remove binary file and log files"
+helpProjectRoot:
+	@echo "Help: Project root Makefile"
+	@echo "~> make init  - check base env of this project"
+	@echo "~> make clean - remove binary file and log files"
+	@echo "~> make dev   - run example example/pprof/pprofdemo.go"
+
+help: helpGoMod helpProjectRoot
 	@echo ""
-	@echo "make dev - run server use conf/config.yaml"
+	@echo "-- more info see Makefile include: MakeGoMod.mk --"

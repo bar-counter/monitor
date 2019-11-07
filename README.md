@@ -29,8 +29,8 @@ support check
 
 | lib | url | version |
 |:-----|:-----|:-----|
-| gin | https://github.com/gin-gonic/gin | 1.4.0 |
-| gopsutil | https://github.com/shirou/gopsutil | 2.19.05 |
+| gin | https://github.com/gin-gonic/gin | v1.4.0 |
+| gopsutil | https://github.com/shirou/gopsutil | v2.19.10 |
 
 # demo
 
