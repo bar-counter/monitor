@@ -3,7 +3,8 @@
 - [for what](#for-what)
   - [dependInfo](#dependinfo)
 - [demo](#demo)
-- [use middleware](#use-middleware)
+- [use middleware lib](#use-middleware-lib)
+  - [import](#import)
   - [gin server status](#gin-server-status)
   - [gin server debug](#gin-server-debug)
     - [vars](#vars)
@@ -36,7 +37,7 @@ support check
 
 ```bash
 make init
-make checkDepends
+make dep
 # ensure right then
 make dev
 # and open url
@@ -44,11 +45,17 @@ make dev
 # pprof http://127.0.0.1:38000/debug/pprof/
 ```
 
-# use middleware
+# use middleware lib
+
+## import
 
 ```bash
 # go get
 go get -v github.com/bar-counter/monitor
+
+# go mod
+GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@v1.1.0
+GO111MODULE=on go mod vendor
 
 # dep go 1.7 -> 1.11
 dep ensure --add github.com/bar-counter/monitor@1.0.1
