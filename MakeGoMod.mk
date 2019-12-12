@@ -1,7 +1,7 @@
 # this file must use as base Makefile
 
 modVerify:
-	# in GOPATH must use [ GO111MODULE=on go mod ] to use
+	# in GOPATH must use GO111MODULE=on go mod init to init
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod verify
 
 modDownload:
@@ -11,7 +11,7 @@ modDownload:
 modTidy:
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod tidy
 
-dep: modVerify
+dep: modVerify modDownload
 	@echo "just check depends info below"
 
 modGraphDependencies:

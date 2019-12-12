@@ -24,6 +24,7 @@ ENV_GO_PROXY ?= https://goproxy.io/
 
 # include
 include MakeGoMod.mk
+include MakeGoTravis.mk
 
 checkEnvGo:
 ifndef GOPATH
@@ -78,6 +79,6 @@ helpProjectRoot:
 	@echo "~> make clean - remove binary file and log files"
 	@echo "~> make dev   - run example example/pprof/pprofdemo.go"
 
-help: helpGoMod helpProjectRoot
+help: helpGoTravis helpGoMod helpProjectRoot
 	@echo ""
 	@echo "-- more info see Makefile include: MakeGoMod.mk --"

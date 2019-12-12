@@ -1,14 +1,28 @@
 ### custom template
 
-build/
-vendor/
 log/
 docs/
 
-### Go template
+### build temple
+build/
+dist/
 
-# gomod
+### go mod
+
 go.sum
+vendor/
+
+### go test
+# out of testcase
+*.test
+# test coverage out
+coverage.out
+coverage.txt
+# testData folder of golang
+testdata/
+# Expected results when tested
+.golden
+
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o

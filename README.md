@@ -1,3 +1,8 @@
+[![TravisBuildStatus](https://api.travis-ci.org/bar-counter/monitor.svg?branch=master)](https://travis-ci.org/bar-counter/monitor)
+[![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
+[![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
+[![codecov](https://codecov.io/gh/bar-counter/monitor/branch/master/graph/badge.svg)](https://codecov.io/gh/bar-counter/monitor)
+
 <!-- TOC -->
 
 - [for what](#for-what)
