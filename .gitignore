@@ -12,6 +12,9 @@ dist/
 go.sum
 vendor/
 
+## go dep
+Gopkg.lock
+
 ### go test
 # out of testcase
 *.test
