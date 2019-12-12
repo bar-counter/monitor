@@ -58,7 +58,9 @@ make dev
 # go get
 go get -v github.com/bar-counter/monitor
 
-# go mod
+# go mod find out verison
+go list -m -versions github.com/bar-counter/monitor
+# then use your want verison
 GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@v1.1.0
 GO111MODULE=on go mod vendor
 
