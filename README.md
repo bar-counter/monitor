@@ -60,7 +60,9 @@ go get -v github.com/bar-counter/monitor
 
 # go mod find out verison
 go list -m -versions github.com/bar-counter/monitor
-# then use your want verison
+# all use awk to get script
+echo "go mod edit -require=$(go list -m -versions github.com/bar-counter/monitor | awk '{print $1 "@" $NF}')"
+# then use your want verison like v1.1.0
 GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@v1.1.0
 GO111MODULE=on go mod vendor
 
