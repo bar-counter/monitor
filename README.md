@@ -1,4 +1,4 @@
-[![golang-full](https://github.com/bar-counter/monitor/workflows/golang-full/badge.svg?branch=main)](https://github.com/bar-counter/monitor/actions)
+[![golang-full](https://github.com/bar-counter/monitor/workflows/golang-full/badge.svg?branch=master)](https://github.com/bar-counter/monitor/actions?query=workflow%3Agolang-full)
 [![TravisBuildStatus](https://api.travis-ci.org/bar-counter/monitor.svg?branch=master)](https://travis-ci.org/bar-counter/monitor)
 [![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
