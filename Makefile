@@ -20,7 +20,7 @@ ROOT_REPO_OS_DIST_PATH ?= $(ROOT_DIST)/$(DIST_OS)/release/$(DIST_VERSION)
 ROOT_LOG_PATH ?= ./log
 
 # can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
-ENV_GO_PROXY ?= https://goproxy.io/
+ENV_GO_PROXY ?= https://goproxy.cn/
 
 # include
 include MakeGoMod.mk

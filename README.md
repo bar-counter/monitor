@@ -1,3 +1,4 @@
+[![golang-full](https://github.com/bar-counter/monitor/workflows/golang-full/badge.svg?branch=main)](https://github.com/bar-counter/monitor/actions)
 [![TravisBuildStatus](https://api.travis-ci.org/bar-counter/monitor.svg?branch=master)](https://travis-ci.org/bar-counter/monitor)
 [![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
@@ -35,8 +36,9 @@ support check
 
 | lib | url | version |
 |:-----|:-----|:-----|
-| gin | https://github.com/gin-gonic/gin | v1.4.0 |
-| gopsutil | https://github.com/shirou/gopsutil | v2.19.10 |
+| gin | https://github.com/gin-gonic/gin | v1.6.3 |
+| gopsutil | https://github.com/shirou/gopsutil | v2.20.9+incompatible |
+| go-ole | https://github.com/go-ole/go-ole | v1.2.5 |
 
 # demo
 
@@ -99,16 +101,16 @@ import (
 and you can use to get status of server
 
 ```bash
-curl 'http://127.0.0.1:38000/status/health' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/health' \
   -X GET
 
-curl 'http://127.0.0.1:38000/status/hardware/disk' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/hardware/disk' \
   -X GET
 
-curl 'http://127.0.0.1:38000/status/hardware/ram' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/hardware/ram' \
   -X GET
 
-curl 'http://127.0.0.1:38000/status/hardware/cpu' \                                                                                                                                                                          [3:34:08]
+curl 'http://127.0.0.1:38000/status/hardware/cpu' \
   -X GET
 ```
 
@@ -144,7 +146,7 @@ import (
 ```
 
 ```bash
-curl 'http://127.0.0.1:38000/debug/vars' \                                                                                                                                                                             [4:02:09]
+curl 'http://127.0.0.1:38000/debug/vars' \
 -X GET
 ```
 

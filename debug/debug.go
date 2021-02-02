@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"expvar"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"runtime"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // let full vars publish at expvar

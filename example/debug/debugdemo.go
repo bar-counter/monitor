@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/bar-counter/monitor"
 	"github.com/gin-gonic/gin"
 )

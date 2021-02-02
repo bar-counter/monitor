@@ -1,9 +1,10 @@
 package pprof
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/pprof"
+
+	"github.com/gin-gonic/gin"
 )
 
 func OnBind(r *gin.RouterGroup, pprofPrefix string, handlers ...gin.HandlerFunc) {
