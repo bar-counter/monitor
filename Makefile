@@ -5,7 +5,7 @@ TOP_DIR := $(shell pwd)
 # endif
 
 # each tag change this
-ENV_DIST_VERSION := v1.0.0
+ENV_DIST_VERSION := v1.3.0
 # need open proxy 1 is need 0 is default
 ENV_NEED_PROXY=1
 
@@ -16,7 +16,7 @@ ENV_DIST_ARCH := amd64
 ENV_DIST_OS_DOCKER ?= linux
 ENV_DIST_ARCH_DOCKER ?= amd64
 
-ROOT_NAME ?= golang-project-temple-docker-db
+ROOT_NAME ?= monitor
 
 # ignore used not matching mode
 ROOT_TEST_INVERT_MATCH ?= "vendor"
