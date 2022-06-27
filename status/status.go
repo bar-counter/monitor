@@ -38,7 +38,7 @@ type Disk struct {
 	UsedPercent int    `json:"used_percent,omitempty"`
 }
 
-// @Summary /status/disk
+// @Summary /status/hardware/disk
 // @Description HealthCheck DiskCheck checks the disk usage.
 // @Tags status
 // @Accept application/json
@@ -88,7 +88,7 @@ type RAM struct {
 	UsedPercent int    `json:"used_percent,omitempty"`
 }
 
-// @Summary /status/ram
+// @Summary /status/hardware/ram
 // @Description HealthCheck RAMCheck checks the disk usage.
 // @Tags status
 // @Accept application/json
@@ -130,7 +130,7 @@ func RAMCheck(c *gin.Context) {
 	c.JSON(status, ramInfo)
 }
 
-// @Summary /status/cpu
+// @Summary /status/hardware/cpu
 // @Description HealthCheck CPUCheck checks the cpu usage.
 // @Tags status
 // @Success 200 "CPU OK server run ok"
