@@ -45,7 +45,7 @@ modDownload:
 	@echo "=> If error can use [ make modVerify ] to fix"
 	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
 	then GOPROXY="$(ENV_GO_PROXY)" go mod download && GOPROXY="$(ENV_GO_PROXY)" go mod vendor; \
-	else go mod download && GO111MODULE=on go mod vendor; \
+	else go mod download && go mod vendor; \
 	fi
 
 modTidy:

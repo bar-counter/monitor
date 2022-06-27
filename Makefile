@@ -93,8 +93,8 @@ init:
 	then echo "-> now open ENV_NEED_PROXY then use GOPROXY=$(ENV_GO_PROXY)"; \
 	fi
 	-@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor; \
-	else GO111MODULE=on go mod vendor; \
+	then GOPROXY="$(ENV_GO_PROXY)" go mod vendor; \
+	else go mod vendor; \
 	fi
 	@echo "-> init finish"
 	@echo "~> you can use [ make help ] see more task"
