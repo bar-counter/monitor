@@ -7,14 +7,14 @@
 <!-- TOC -->
 
 - [for what](#for-what)
-  - [dependInfo](#dependinfo)
+	- [dependInfo](#dependinfo)
 - [demo](#demo)
 - [use middleware lib](#use-middleware-lib)
-  - [import](#import)
-  - [gin server status](#gin-server-status)
-  - [gin server debug](#gin-server-debug)
-    - [vars](#vars)
-    - [pprof](#pprof)
+	- [import](#import)
+	- [gin server status](#gin-server-status)
+	- [gin server debug](#gin-server-debug)
+		- [vars](#vars)
+		- [pprof](#pprof)
 
 <!-- /TOC -->
 
@@ -23,6 +23,7 @@
 - this project used to gin api server status monitor
 
 support check
+
 - `health`
 - `Hardware`
 	- disk
@@ -34,11 +35,10 @@ support check
 
 ## dependInfo
 
-| lib | url | version |
-|:-----|:-----|:-----|
-| gin | https://github.com/gin-gonic/gin | v1.6.3 |
-| gopsutil | https://github.com/shirou/gopsutil | v2.20.9+incompatible |
-| go-ole | https://github.com/go-ole/go-ole | v1.2.5 |
+| lib | url | version              |
+|:-----|:-----|:---------------------|
+| gin | https://github.com/gin-gonic/gin | v1.7.7               |
+| gopsutil | github.com/shirou/gopsutil/v3 | v3.22.5 |
 
 # demo
 
@@ -46,7 +46,7 @@ support check
 make init
 make dep
 # ensure right then
-make dev
+make exampleDebug
 # and open url
 # health http://127.0.0.1:38000/status/health
 # pprof http://127.0.0.1:38000/debug/pprof/
@@ -65,12 +65,8 @@ go list -m -versions github.com/bar-counter/monitor
 # all use awk to get script
 echo "go mod edit -require=$(go list -m -versions github.com/bar-counter/monitor | awk '{print $1 "@" $NF}')"
 # then use your want verison like v1.1.0
-GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@v1.1.0
-GO111MODULE=on go mod vendor
-
-# dep go 1.7 -> 1.11
-dep ensure --add github.com/bar-counter/monitor@1.0.1
-dep ensure -v
+go mod edit -require=github.com/bar-counter/monitor@v2.0.0
+go mod download
 ```
 
 ## gin server status
@@ -79,10 +75,16 @@ dep ensure -v
 - [see example statusdemo.go](example/status/statusdemo.go)
 
 ```go
+package main
+
 import (
+	"fmt"
+
 	"github.com/bar-counter/monitor"
+	"github.com/gin-gonic/gin"
 )
 
+func main() {
 	r := gin.Default()
 	monitorCfg := &monitor.Cfg{
 		Status: true,
@@ -95,10 +97,16 @@ import (
 		fmt.Printf("monitor register err %v\n", err)
 		return
 	}
-	r.Run(":38000")
+	err = r.Run(":38000")
+	if err != nil {
+		fmt.Printf("run err %v\n", err)
+		return
+	}
+}
+
 ```
 
-and you can use to get status of server
+and you can use to get status of server or run `make exampleStatus`
 
 ```bash
 curl 'http://127.0.0.1:38000/status/health' \
@@ -124,12 +132,22 @@ curl 'http://127.0.0.1:38000/status/hardware/cpu' \
 ### vars
 
 ```go
+package main
+
 import (
+	"fmt"
+
 	"github.com/bar-counter/monitor"
+	"github.com/gin-gonic/gin"
 )
 
+func main() {
 	r := gin.Default()
 	monitorCfg := &monitor.Cfg{
+		Status: true,
+		//StatusPrefix: "/status",
+		StatusHardware: true,
+		//StatusHardwarePrefix: "/hardware",
 		Debug: true,
 		//DebugPrefix: "/debug",
 		DebugMiddleware: gin.BasicAuth(gin.Accounts{
@@ -142,30 +160,40 @@ import (
 		fmt.Printf("monitor register err %v\n", err)
 		return
 	}
-	r.Run(":38000")
+
+	err = r.Run(":38000")
+	if err != nil {
+		fmt.Printf("run err %v\n", err)
+		return
+	}
+}
+
 ```
+
+or run `make exampleDebug` because use gin.BasicAuth must add `--user user:user`
 
 ```bash
 curl 'http://127.0.0.1:38000/debug/vars' \
--X GET
+ --user user:user \
+ -X GET
 ```
 
 > DebugPrefix default is `/debug`
 
 ```json
 {
-    "cgo": 6,
-    "cmdline": [
-        "/private/var/folders/3t/q6knzmrs09b0m5px2dljnpnr0000gn/T/___go_build_main_go__1_"
-    ],
-    "gc_pause": 0,
-    "go_version": "go1.11.4",
-    "goroutine": 3,
-    "memstats": {
-    },
-    "os": "darwin",
-    "os_cores": 8,
-    "run_time": "8.211807521s"
+  "cgo": 6,
+  "cmdline": [
+    "/var/folders/79/dw7nb8rx7kgcqty_9qq2nv640000gn/T/go-build2348802398/b001/exe/debugdemo"
+  ],
+  "gc_pause": 0,
+  "go_version": "go1.18.2",
+  "goroutine": 5,
+  "memstats": {
+  },
+  "os": "darwin",
+  "os_cores": 8,
+  "run_time": "8.211807521s"
 }
 ```
 
@@ -191,10 +219,16 @@ curl 'http://127.0.0.1:38000/debug/vars' \
 - [see example pprofdemo.go](example/pprof/pprofdemo.go)
 
 ```go
+package main
+
 import (
+	"fmt"
+
 	"github.com/bar-counter/monitor"
+	"github.com/gin-gonic/gin"
 )
 
+func main() {
 	r := gin.Default()
 	monitorCfg := &monitor.Cfg{
 		Status: true,
@@ -203,10 +237,10 @@ import (
 		//StatusHardwarePrefix: "/hardware",
 		Debug: true,
 		//DebugPrefix: "/debug",
-		DebugMiddleware: gin.BasicAuth(gin.Accounts{
-			"admin": "admin",
-			"user":  "user",
-		}),
+		//DebugMiddleware: gin.BasicAuth(gin.Accounts{
+		//	"admin": "admin",
+		//	"user":  "user",
+		//}),
 		PProf: true,
 		//PProfPrefix: "/pprof",
 	}
@@ -215,8 +249,17 @@ import (
 		fmt.Printf("monitor register err %v\n", err)
 		return
 	}
-	r.Run(":38000")
+
+	err = r.Run(":38000")
+	if err != nil {
+		fmt.Printf("run err %v\n", err)
+		return
+	}
+}
+
 ```
+
+or run `make examplePprof`
 
 then see at [http://127.0.0.1:38000/debug/pprof/](http://127.0.0.1:38000/debug/pprof/)
 or use cli to

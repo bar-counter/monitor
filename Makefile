@@ -7,7 +7,7 @@ TOP_DIR := $(shell pwd)
 # each tag change this
 ENV_DIST_VERSION := v1.3.0
 # need open proxy 1 is need 0 is default
-ENV_NEED_PROXY=1
+ENV_NEED_PROXY=0
 
 # linux windows darwin  list as: go tool dist list
 ENV_DIST_OS := linux
@@ -119,11 +119,17 @@ buildARCH: dep
 	else GOOS=$(ENV_DIST_OS) GOARCH=$(ENV_DIST_ARCH) go build -tags netgo -o build/main main.go; \
 	fi
 
-dev: buildMain
-	-ENV_WEB_AUTO_HOST=true ./build/main
+exampleStatus: dep
+	@echo "=> run dev example/status/statusdemo"
+	@go run example/status/statusdemo.go
 
-run: dev
-	@echo "=> run dev start"
+exampleDebug: dep
+	@echo "=> run dev example/debug/debugdemo"
+	@go run example/debug/debugdemo.go
+
+examplePprof: dep
+	@echo "=> run dev example/pprof/pprofdemo"
+	@go run example/pprof/pprofdemo.go
 
 test:
 	@echo "=> run test start"
@@ -143,11 +149,11 @@ helpProjectRoot:
 	@echo "-- now build name: $(ROOT_NAME) version: $(ENV_DIST_VERSION)"
 	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_DIST_OS) $(ENV_DIST_ARCH) --"
 	@echo ""
-	@echo "~> make init         - check base env of this project"
-	@echo "~> make clean        - remove binary file and log files"
-	@echo "~> make test         - run test case ignore --invert-match $(ROOT_TEST_INVERT_MATCH)"
-	@echo "~> make testBenchmem - run go test benchmem case all"
-	@echo "~> make dev          - run as develop"
+	@echo "~> make init                   - check base env of this project"
+	@echo "~> make clean                  - remove binary file and log files"
+	@echo "~> make test                   - run test case ignore --invert-match $(ROOT_TEST_INVERT_MATCH)"
+	@echo "~> make testBenchmem           - run go test benchmem case all"
+	@echo "~> make exampleDebug           - run as example Debug"
 
 help: helpGoMod helpGoTravis helpProjectRoot
 	@echo ""

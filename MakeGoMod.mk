@@ -23,8 +23,8 @@ modGraphDependencies:
 	then echo "-> now use GOPROXY=$(ENV_GO_PROXY)"; \
 	fi
 	-@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod graph; \
-	else GO111MODULE=on go mod graph; \
+	then GOPROXY="$(ENV_GO_PROXY)" go mod graph; \
+	else go mod graph; \
 	fi
 
 modVerify:
@@ -34,8 +34,8 @@ modVerify:
 	then echo "-> now use GOPROXY=$(ENV_GO_PROXY)"; \
 	fi
 	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod verify; \
-	else GO111MODULE=on go mod verify; \
+	then GOPROXY="$(ENV_GO_PROXY)" go mod verify; \
+	else go mod verify; \
 	fi
 
 modDownload:
@@ -44,8 +44,8 @@ modDownload:
 	fi
 	@echo "=> If error can use [ make modVerify ] to fix"
 	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download && GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor; \
-	else GO111MODULE=on go mod download && GO111MODULE=on go mod vendor; \
+	then GOPROXY="$(ENV_GO_PROXY)" go mod download && GOPROXY="$(ENV_GO_PROXY)" go mod vendor; \
+	else go mod download && GO111MODULE=on go mod vendor; \
 	fi
 
 modTidy:
@@ -53,8 +53,8 @@ modTidy:
 	then echo "-> now use GOPROXY=$(ENV_GO_PROXY)"; \
 	fi
 	-if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod tidy; \
-	else GO111MODULE=on go mod tidy; \
+	then GOPROXY="$(ENV_GO_PROXY)" go mod tidy; \
+	else go mod tidy; \
 	fi
 
 dep: modVerify modDownload
