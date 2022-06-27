@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor"
+	"github.com/bar-counter/monitor/v2"
 	"github.com/gin-gonic/gin"
 )
 

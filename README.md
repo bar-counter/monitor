@@ -64,8 +64,8 @@ go get -v github.com/bar-counter/monitor
 go list -m -versions github.com/bar-counter/monitor
 # all use awk to get script
 echo "go mod edit -require=$(go list -m -versions github.com/bar-counter/monitor | awk '{print $1 "@" $NF}')"
-# then use your want verison like v1.1.0
-go mod edit -require=github.com/bar-counter/monitor@v2.0.0
+# then use your want version like v2.0.0
+go mod edit -require=github.com/bar-counter/monitor/v2@v2.0.0
 go mod download
 ```
 
@@ -80,7 +80,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor"
+	"github.com/bar-counter/monitor/v2"
 	"github.com/gin-gonic/gin"
 )
 
@@ -103,7 +103,6 @@ func main() {
 		return
 	}
 }
-
 ```
 
 and you can use to get status of server or run `make exampleStatus`
@@ -137,7 +136,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor"
+	"github.com/bar-counter/monitor/v2"
 	"github.com/gin-gonic/gin"
 )
 
@@ -224,7 +223,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor"
+	"github.com/bar-counter/monitor/v2"
 	"github.com/gin-gonic/gin"
 )
 
