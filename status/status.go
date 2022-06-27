@@ -38,15 +38,6 @@ type Disk struct {
 	UsedPercent int    `json:"used_percent,omitempty"`
 }
 
-// @Summary /status/hardware/disk
-// @Description HealthCheck DiskCheck checks the disk usage.
-// @Tags status
-// @Accept application/json
-// @Produce application/json
-// @Success 200 {object} status.Disk "value in monitor.status.Disk DISK OK less than 80% use, 80% to 90% is WARNING"
-// @failure 429 {object} status.Disk "value in monitor.status.Disk DISK need check after 90%"
-// @failure 500 "DISK CRITICAL must check!"
-// @Router /status/disk [get]
 func DiskCheck(c *gin.Context) {
 	u, _ := disk.Usage("/")
 
@@ -88,15 +79,6 @@ type RAM struct {
 	UsedPercent int    `json:"used_percent,omitempty"`
 }
 
-// @Summary /status/hardware/ram
-// @Description HealthCheck RAMCheck checks the disk usage.
-// @Tags status
-// @Accept application/json
-// @Produce application/json
-// @Success 200 {object} status.RAM "value in monitor.status.RAM OK less than 80% use, 80% to 95% is WARNING"
-// @failure 429 {object} status.RAM "value in monitor.status.RAM need check after 95%"
-// @failure 500 "RAM CRITICAL must check!"
-// @Router /status/ram [get]
 func RAMCheck(c *gin.Context) {
 	u, _ := mem.VirtualMemory()
 
@@ -130,13 +112,6 @@ func RAMCheck(c *gin.Context) {
 	c.JSON(status, ramInfo)
 }
 
-// @Summary /status/hardware/cpu
-// @Description HealthCheck CPUCheck checks the cpu usage.
-// @Tags status
-// @Success 200 "CPU OK server run ok"
-// @failure 429 "CPU WARNING need check"
-// @failure 500 "CPU CRITICAL must check"
-// @Router /status/cpu [get]
 func CPUCheck(c *gin.Context) {
 	cores, _ := cpu.Counts(false)
 
