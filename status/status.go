@@ -20,10 +20,11 @@ const (
 )
 
 // @Summary /status/health
-// @Description HealthCheck shows OK as the ping-pong result.
+// @Description HealthCheck shows OK as the ping-pong result. must of api not use [ BasePath ]
 // @Tags status
 // @Success 200 "OK"
 // @Router /status/health [get]
+// @BasePath /
 func HealthCheck(c *gin.Context) {
 	message := "OK"
 	c.String(http.StatusOK, message)
