@@ -34,10 +34,10 @@ support check
 
 ## dependInfo
 
-| lib      | url                              | version |
-|:---------|:---------------------------------|:--------|
-| gin      | https://github.com/gin-gonic/gin | v1.9.1  |
-| gopsutil | github.com/shirou/gopsutil/v3    | v3.23.5 |
+| lib      | url                                 | version |
+|:---------|:------------------------------------|:--------|
+| gin      | https://github.com/gin-gonic/gin    | v1.9.1  |
+| gopsutil | https://github.com/shirou/gopsutil/ | v3.23.5 |
 
 # demo
 
