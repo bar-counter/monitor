@@ -9,8 +9,8 @@ dist/
 
 ### go mod
 
-go.sum
 vendor/
+!go.sum
 
 ## go dep
 Gopkg.lock
