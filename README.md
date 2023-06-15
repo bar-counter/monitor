@@ -2,6 +2,7 @@
 [![go mod version](https://img.shields.io/github/go-mod/go-version/bar-counter/monitor?label=go.mod)](https://github.com/bar-counter/monitor)
 [![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor?ref=badge_shield)
 
 <!-- TOC -->
 
@@ -283,3 +284,6 @@ go tool pprof http://localhost:38000/debug/pprof/heap
 # block
 go tool pprof http://localhost:38000/debug/pprof/block
 ```
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor?ref=badge_large)
