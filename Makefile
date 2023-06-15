@@ -80,6 +80,7 @@ cleanLog:
 
 cleanTestData:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
+	@$(RM) coverage.txt
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
 	@$(RM) -r **/**/**/testdata
