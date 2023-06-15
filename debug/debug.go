@@ -11,8 +11,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// PublishExpVarDebug
 // let full vars publish at expvar
-func init() {
+func PublishExpVarDebug() {
 	expvar.Publish("cgo", expvar.Func(getNumCgoCall))
 	expvar.Publish("gc_pause", expvar.Func(getLastGCPauseTime))
 	expvar.Publish("go_version", expvar.Func(currentGoVersion))

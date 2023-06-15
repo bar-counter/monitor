@@ -85,6 +85,7 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 			}
 		}
 		if cfg.Debug {
+			debug.PublishExpVarDebug()
 			var debugGroup *gin.RouterGroup
 			if cfg.DebugMiddleware != nil {
 				debugGroup = mGroup.Group(cfg.DebugPrefix, cfg.DebugMiddleware)
