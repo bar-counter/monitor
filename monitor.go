@@ -21,6 +21,7 @@ const (
 type Cfg struct {
 	APIBase              string
 	Status               bool
+	StatusMiddleware     gin.HandlerFunc
 	StatusPrefix         string
 	StatusHardware       bool
 	StatusHardwarePrefix string
@@ -32,6 +33,8 @@ type Cfg struct {
 	PProfPrefix          string
 }
 
+// DefaultCfg
+// config for monitor
 var DefaultCfg *Cfg
 
 func initDefaultCfg() *Cfg {
@@ -60,12 +63,24 @@ func Register(r *gin.Engine, cfg *Cfg) error {
 				statusGroup.GET("/health", status.HealthCheck)
 
 				if cfg.StatusHardware {
-					statusHardwareGroup := statusGroup.Group(cfg.StatusHardwarePrefix)
-					{
-						statusHardwareGroup.GET("/disk", status.DiskCheck)
-						statusHardwareGroup.GET("/ram", status.RAMCheck)
-						statusHardwareGroup.GET("/cpu", status.CPUCheck)
+					if cfg.StatusMiddleware == nil {
+						statusHardwareGroup := statusGroup.Group(cfg.StatusHardwarePrefix)
+						{
+							statusHardwareGroup.GET("/disk", status.DiskCheck)
+							statusHardwareGroup.GET("/ram", status.RAMCheck)
+							statusHardwareGroup.GET("/cpu", status.CPUCheck)
+							statusHardwareGroup.GET("/cpu_info", status.CPUInfo)
+						}
+					} else {
+						statusHardwareGroup := statusGroup.Group(cfg.StatusHardwarePrefix, cfg.StatusMiddleware)
+						{
+							statusHardwareGroup.GET("/disk", status.DiskCheck)
+							statusHardwareGroup.GET("/ram", status.RAMCheck)
+							statusHardwareGroup.GET("/cpu", status.CPUCheck)
+							statusHardwareGroup.GET("/cpu_info", status.CPUInfo)
+						}
 					}
+
 				}
 			}
 		}

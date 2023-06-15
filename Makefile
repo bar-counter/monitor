@@ -1,123 +1,112 @@
-TOP_DIR := $(shell pwd)
+.PHONY: test check clean build dist all
+#TOP_DIR := $(shell pwd)
+# can change by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
+ENV_DIST_VERSION:=v1.3.0
+ENV_DIST_MARK=
 
-# ifeq ($(FILE), $(wildcard $(FILE)))
-# 	@ echo target file not found
-# endif
+ROOT_NAME ?= monitor
 
-# each tag change this
-ENV_DIST_VERSION := v1.3.0
-# need open proxy 1 is need 0 is default
-ENV_NEED_PROXY=0
+ENV_RUN_INFO_HELP_ARGS= -h
+ENV_RUN_INFO_ARGS=
+# change to other build entrance
+ENV_ROOT_BUILD_ENTRANCE = main.go
+ENV_ROOT_BUILD_BIN_NAME = $(ROOT_NAME)
+ENV_ROOT_BUILD_PATH = build
+ENV_ROOT_BUILD_BIN_PATH = $(ENV_ROOT_BUILD_PATH)/$(ENV_ROOT_BUILD_BIN_NAME)
+ENV_ROOT_LOG_PATH = log/
 
-# linux windows darwin  list as: go tool dist list
+# linux windows darwin list as: go tool dist list
 ENV_DIST_OS := linux
 # amd64 386
 ENV_DIST_ARCH := amd64
 ENV_DIST_OS_DOCKER ?= linux
 ENV_DIST_ARCH_DOCKER ?= amd64
 
-ROOT_NAME ?= monitor
-
 # ignore used not matching mode
-ROOT_TEST_INVERT_MATCH ?= "vendor"
-# set ignore of test case like grep -v -E "vendor|fataloom" to ignore vendor and fataloom package
-ROOT_TEST_LIST ?= $$(go list ./... | grep -v -E $(ROOT_TEST_INVERT_MATCH))
+# set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
+ENV_ROOT_TEST_INVERT_MATCH ?= "vendor|go_fatal_error|robotn|shirou|go_robot"
+ifeq ($(OS),Windows_NT)
+ENV_ROOT_TEST_LIST ?= ./...
+else
+ENV_ROOT_TEST_LIST ?= $$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
+endif
 # test max time
-ROOT_TEST_MAX_TIME := 1m
+ENV_ROOT_TEST_MAX_TIME := 1
 
-ROOT_BUILD_PATH ?= ./build
-ROOT_DIST ?= ./dist
-ROOT_REPO ?= ./dist
-ROOT_LOG_PATH ?= ./log
-ROOT_ROOT_DATA_PATH ?= ./data
-ROOT_TEST_BUILD_PATH ?= $(ROOT_BUILD_PATH)/test/$(ENV_DIST_VERSION)
-ROOT_TEST_DIST_PATH ?= $(ROOT_DIST)/test/$(ENV_DIST_VERSION)
-ROOT_TEST_OS_DIST_PATH ?= $(ROOT_DIST)/$(ENV_DIST_OS)/test/$(ENV_DIST_VERSION)
-ROOT_REPO_DIST_PATH ?= $(ROOT_REPO)/$(ENV_DIST_VERSION)
-ROOT_REPO_OS_DIST_PATH ?= $(ROOT_REPO)/$(ENV_DIST_OS)/release/$(ENV_DIST_VERSION)
-
-# change this for ip-v4 get
-ROOT_LOCAL_IP_V4_LINUX = $$(ifconfig enp8s0 | grep inet | grep -v inet6 | cut -d ':' -f2 | cut -d ' ' -f1)
-ROOT_LOCAL_IP_V4_DARWIN = $$(ifconfig en0 | grep inet | grep -v inet6 | cut -d ' ' -f2)
-
-# can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
-ENV_GO_PROXY ?= https://goproxy.cn/
+# linux windows darwin  list as: go tool dist list
+ENV_DIST_GO_OS = linux
+# amd64 386
+ENV_DIST_GO_ARCH = amd64
 
 # include MakeDockerRun.mk for docker run
-include MakeGoMod.mk
-include MakeGoTravis.mk
+include z-MakefileUtils/MakeBasicEnv.mk
+include z-MakefileUtils/MakeDistTools.mk
+include z-MakefileUtils/MakeGoMod.mk
+include z-MakefileUtils/MakeGoDist.mk
 
-checkEnvGOPATH:
-ifndef GOPATH
-	@echo Environment variable GOPATH is not set
-	exit 1
+all: env
+
+env: distEnv
+	@echo "== project env info start =="
+	@echo ""
+	@echo "test info"
+	@echo "ENV_ROOT_TEST_LIST                        ${ENV_ROOT_TEST_LIST}"
+	@echo ""
+	@echo "ROOT_NAME                                 ${ROOT_NAME}"
+	@echo "ENV_DIST_VERSION                          ${ENV_DIST_VERSION}"
+	@echo "ENV_ROOT_CHANGELOG_PATH                   ${ENV_ROOT_CHANGELOG_PATH}"
+	@echo ""
+	@echo "ENV_ROOT_BUILD_ENTRANCE                   ${ENV_ROOT_BUILD_ENTRANCE}"
+	@echo "ENV_ROOT_BUILD_PATH                       ${ENV_ROOT_BUILD_PATH}"
+ifeq ($(OS),Windows_NT)
+	@echo "ENV_ROOT_BUILD_BIN_PATH                   $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
+else
+	@echo "ENV_ROOT_BUILD_BIN_PATH                   ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
+	@echo "ENV_DIST_GO_OS                            ${ENV_DIST_GO_OS}"
+	@echo "ENV_DIST_GO_ARCH                          ${ENV_DIST_GO_ARCH}"
+	@echo ""
+	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
+	@echo "== project env info end =="
+
 
 cleanBuild:
-	@if [ -d ${ROOT_BUILD_PATH} ]; \
-	then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; \
-	else echo "~> has cleaned ${ROOT_BUILD_PATH}"; \
-	fi
-
-cleanDist:
-	@if [ -d ${ROOT_DIST} ]; \
-	then rm -rf ${ROOT_DIST} && echo "~> cleaned ${ROOT_DIST}"; \
-	else echo "~> has cleaned ${ROOT_DIST}"; \
-	fi
+	-@$(RM) -r ${ENV_ROOT_BUILD_PATH}
+	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
 
 cleanLog:
-	@if [ -d ${ROOT_LOG_PATH} ]; \
-	then rm -rf ${ROOT_LOG_PATH} && echo "~> cleaned ${ROOT_LOG_PATH}"; \
-	else echo "~> has cleaned ${ROOT_LOG_PATH}"; \
-	fi
+	-@$(RM) -r ${ENV_ROOT_LOG_PATH}
+	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
 
-cleanRootData:
-	@if [ -d ${ROOT_ROOT_DATA_PATH} ]; \
-	then rm -rf ${ROOT_ROOT_DATA_PATH} && echo "~> cleaned ${ROOT_ROOT_DATA_PATH}"; \
-	else echo "~> has cleaned ${ROOT_ROOT_DATA_PATH}"; \
-	fi
+cleanTestData:
+	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
+	@$(RM) -r **/testdata
+	@$(RM) -r **/**/testdata
+	@$(RM) -r **/**/**/testdata
+	@$(RM) -r **/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/**/testdata
+	$(info -> finish clean folder [ testdata ])
 
-clean: cleanBuild cleanLog cleanRootData
+clean: cleanBuild cleanTestData cleanLog
 	@echo "~> clean finish"
 
-checkLogPath:
-	@if [ ! -d ${ROOT_LOG_PATH} ]; then mkdir -p ${ROOT_LOG_PATH} && echo "~> mkdir ${ROOT_LOG_PATH}"; fi
+cleanAll: clean cleanAllDist
+	@echo "~> clean all finish"
 
 init:
 	@echo "~> start init this project"
-	@echo "-> check go version"
+	@echo "-> check version"
 	go version
-	@echo "-> check go env"
+	@echo "-> check env golang"
 	go env
-	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then echo "-> now open ENV_NEED_PROXY then use GOPROXY=$(ENV_GO_PROXY)"; \
-	fi
-	-@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" go mod vendor; \
-	else go mod vendor; \
-	fi
-	@echo "-> init finish"
 	@echo "~> you can use [ make help ] see more task"
+	-go mod verify
 
-buildMain: dep
-	@echo "-> start build local OS"
-	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then echo "-> now use GOPROXY=$(ENV_GO_PROXY)"; \
-	fi
-	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" go build -o build/main main.go; \
-	else go build -o build/main main.go; \
-	fi
+dep: modVerify modDownload modTidy modVendor
+	@echo "-> just check depends below"
 
-buildARCH: dep
-	@echo "-> start build OS:$(ENV_DIST_OS) ARCH:$(ENV_DIST_ARCH)"
-	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then echo "-> now use GOPROXY=$(ENV_GO_PROXY)"; \
-	fi
-	@if [ $(ENV_NEED_PROXY) -eq 1 ]; \
-	then GOPROXY="$(ENV_GO_PROXY)" GOOS=$(ENV_DIST_OS) GOARCH=$(ENV_DIST_ARCH) go build -tags netgo -o build/main main.go; \
-	else GOOS=$(ENV_DIST_OS) GOARCH=$(ENV_DIST_ARCH) go build -tags netgo -o build/main main.go; \
-	fi
+ci: modTidy modVerify modFmt modVet modLintRun test
 
 exampleStatus: dep
 	@echo "=> run dev example/status/statusdemo"
@@ -133,28 +122,48 @@ examplePprof: dep
 
 test:
 	@echo "=> run test start"
-	#=> go test -test.v $(ROOT_TEST_LIST)
-	@go test -test.v $(ROOT_TEST_LIST)
+ifeq ($(OS),Windows_NT)
+	@go test -test.v $(ENV_ROOT_TEST_LIST)
+else
+	@go test -test.v $(ENV_ROOT_TEST_LIST)
+endif
 
-testBenchmem:
-	@echo "=> run test benchmem start"
-	@go test -test.benchmem
+testCoverage:
+	@echo "=> run test coverage start"
+ifeq ($(OS),Windows_NT)
+	@go test -cover -coverprofile coverage.txt -covermode count -coverpkg ./... -v $(ENV_ROOT_TEST_LIST)
+else
+	@go test -cover -coverprofile coverage.txt -covermode count -coverpkg ./... -v $(ENV_ROOT_TEST_LIST)
+endif
 
-cloc:
-	# https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore
-	cloc --exclude-list-file=.clocignore .
+testCoverageBrowser: testCoverage
+	@go tool cover -html=coverage.txt
+
+testBenchmark:
+	@echo "=> run test benchmark start"
+ifeq ($(OS),Windows_NT)
+	@go test -bench . -benchmem ./...
+else
+	@go test -bench . -benchmem -v $(ENV_ROOT_TEST_LIST)
+endif
 
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
 	@echo "-- now build name: $(ROOT_NAME) version: $(ENV_DIST_VERSION)"
-	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_DIST_OS) $(ENV_DIST_ARCH) --"
+	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_DIST_GO_OS) $(ENV_DIST_GO_ARCH) --"
 	@echo ""
-	@echo "~> make init                   - check base env of this project"
-	@echo "~> make clean                  - remove binary file and log files"
-	@echo "~> make test                   - run test case ignore --invert-match $(ROOT_TEST_INVERT_MATCH)"
-	@echo "~> make testBenchmem           - run go test benchmem case all"
-	@echo "~> make exampleDebug           - run as example Debug"
+	@echo "~> make env                 - print env of this project"
+	@echo "~> make init                - check base env of this project"
+	@echo "~> make dep                 - check and install by go mod"
+	@echo "~> make clean               - remove build binary file, log files, and testdata"
+	@echo "~> make test                - run test case ignore --invert-match by config"
+	@echo "~> make testCoverage        - run test coverage case ignore --invert-match by config"
+	@echo "~> make testCoverageBrowser - see coverage at browser --invert-match by config"
+	@echo "~> make testBenchmark       - run go test benchmark case all"
+	@echo "~> make ci                  - run CI tools tasks"
+	@echo "~> make dev                 - run as develop mode"
+	@echo "~> make run                 - run as sample mode"
 
-help: helpGoMod helpGoTravis helpProjectRoot
+help: helpGoMod helpDist helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeDockerRun.mk --"
+	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoDist.mk --"

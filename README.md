@@ -1,20 +1,19 @@
-[![golang-full](https://github.com/bar-counter/monitor/workflows/golang-full/badge.svg?branch=master)](https://github.com/bar-counter/monitor/actions?query=workflow%3Agolang-full)
-[![TravisBuildStatus](https://api.travis-ci.org/bar-counter/monitor.svg?branch=master)](https://travis-ci.org/bar-counter/monitor)
+[![golang-ci](https://github.com/bar-counter/monitor/workflows/golang-ci/badge.svg?branch=master)](https://github.com/bar-counter/monitor/actions?query=workflow%3Agolang-ci)
+[![go mod version](https://img.shields.io/github/go-mod/go-version/bar-counter/monitor?label=go.mod)](https://github.com/bar-counter/monitor)
 [![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
-[![codecov](https://codecov.io/gh/bar-counter/monitor/branch/master/graph/badge.svg)](https://codecov.io/gh/bar-counter/monitor)
 
 <!-- TOC -->
 
 - [for what](#for-what)
-	- [dependInfo](#dependinfo)
+    - [dependInfo](#dependinfo)
 - [demo](#demo)
 - [use middleware lib](#use-middleware-lib)
-	- [import](#import)
-	- [gin server status](#gin-server-status)
-	- [gin server debug](#gin-server-debug)
-		- [vars](#vars)
-		- [pprof](#pprof)
+    - [import](#import)
+    - [gin server status](#gin-server-status)
+    - [gin server debug](#gin-server-debug)
+        - [vars](#vars)
+        - [pprof](#pprof)
 
 <!-- /TOC -->
 
@@ -26,19 +25,19 @@ support check
 
 - `health`
 - `Hardware`
-	- disk
-	- cpu
-	- ram
+    - disk
+    - cpu
+    - ram
 - `debug`
-	- run vars
-	- pprof
+    - run vars
+    - pprof
 
 ## dependInfo
 
-| lib | url | version              |
-|:-----|:-----|:---------------------|
-| gin | https://github.com/gin-gonic/gin | v1.7.7               |
-| gopsutil | github.com/shirou/gopsutil/v3 | v3.22.5 |
+| lib      | url                              | version |
+|:---------|:---------------------------------|:--------|
+| gin      | https://github.com/gin-gonic/gin | v1.9.1  |
+| gopsutil | github.com/shirou/gopsutil/v3    | v3.23.5 |
 
 # demo
 
@@ -50,6 +49,16 @@ make exampleDebug
 # and open url
 # health http://127.0.0.1:38000/status/health
 # pprof http://127.0.0.1:38000/debug/pprof/
+
+make exampleStatus
+# status http://127.0.0.1:38000/status/hardware/disk
+# status http://127.0.0.1:38000/status/hardware/ram
+# status http://127.0.0.1:38000/status/hardware/cpu
+# status http://127.0.0.1:38000/status/hardware/cpu_info
+
+make examplePprof
+# pprof http://127.0.0.1:38000/debug/vars
+# pprof http://127.0.0.1:38000/debug/pprof/
 ```
 
 # use middleware lib
@@ -58,15 +67,15 @@ make exampleDebug
 
 ```bash
 # go get
-go get -v github.com/bar-counter/monitor
+go get -v github.com/bar-counter/monitor/v2
 
-# go mod find out verison
-go list -m -versions github.com/bar-counter/monitor
+# go mod find out version
+go list -mod readonly -m -versions github.com/bar-counter/monitor/v2
 # all use awk to get script
 echo "go mod edit -require=$(go list -m -versions github.com/bar-counter/monitor | awk '{print $1 "@" $NF}')"
-# then use your want version like v2.0.0
-go mod edit -require=github.com/bar-counter/monitor/v2@v2.0.0
-go mod download
+# then use your want version like v2.1.0
+go mod edit -require=github.com/bar-counter/monitor/v2@v2.1.0
+go mod download -x
 ```
 
 ## gin server status
@@ -118,6 +127,9 @@ curl 'http://127.0.0.1:38000/status/hardware/ram' \
   -X GET
 
 curl 'http://127.0.0.1:38000/status/hardware/cpu' \
+  -X GET
+
+curl 'http://127.0.0.1:38000/status/hardware/cpu_info' \
   -X GET
 ```
 
@@ -196,17 +208,17 @@ curl 'http://127.0.0.1:38000/debug/vars' \
 }
 ```
 
-| item | doc  | desc |
-|:-----|:-----|:-----|
-| cgo | go doc runtime.NumCgoCall |
-| cmdline |  | server run cmd |
-| cores | go doc runtime.NumCPU |
-| gc_pause | | count last gc time |
-| goroutine | go doc runtime.NumGoroutine| |
-| memstats | go doc runtime.MemStats | |
-| os | go doc runtime.GOOS | |
-| os_cores | go doc runtime.NumCPU | |
-| run_time | | count server run time |
+| item      | doc                         | desc                  |
+|:----------|:----------------------------|:----------------------|
+| cgo       | go doc runtime.NumCgoCall   |
+| cmdline   |                             | server run cmd        |
+| cores     | go doc runtime.NumCPU       |
+| gc_pause  |                             | count last gc time    |
+| goroutine | go doc runtime.NumGoroutine |                       |
+| memstats  | go doc runtime.MemStats     |                       |
+| os        | go doc runtime.GOOS         |                       |
+| os_cores  | go doc runtime.NumCPU       |                       |
+| run_time  |                             | count server run time |
 
 > more info see `go doc expvar`
 

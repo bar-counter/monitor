@@ -5,11 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/shirou/gopsutil/v3/cpu"
+	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/mem"
-
-	"github.com/shirou/gopsutil/cpu"
-	"github.com/shirou/gopsutil/disk"
-	"github.com/shirou/gopsutil/load"
 )
 
 const (
@@ -134,4 +133,42 @@ func CPUCheck(c *gin.Context) {
 
 	message := fmt.Sprintf("%s - Load average: %.2f, %.2f, %.2f | Cores: %d", text, l1, l5, l15, cores)
 	c.String(status, "\n"+message)
+}
+
+type CPU struct {
+	L1  float64 `json:"l_1,omitempty"`
+	L5  float64 `json:"l_5,omitempty"`
+	L15 float64 `json:"l_15,omitempty"`
+
+	CpuCnt int    `json:"c_cnt,omitempty"`
+	Status string `json:"status"`
+}
+
+func CPUInfo(c *gin.Context) {
+	cores, _ := cpu.Counts(false)
+
+	a, _ := load.Avg()
+	l1 := a.Load1
+	l5 := a.Load5
+	l15 := a.Load15
+
+	status := http.StatusOK
+	text := "OK"
+
+	if l5 >= float64(cores-1) {
+		status = http.StatusInternalServerError
+		text = "CRITICAL"
+	} else if l5 >= float64(cores-2) {
+		status = http.StatusTooManyRequests
+		text = "WARNING"
+	}
+
+	cpuInfo := &CPU{
+		L1:     l1,
+		L5:     l5,
+		L15:    l15,
+		CpuCnt: cores,
+		Status: text,
+	}
+	c.JSON(status, cpuInfo)
 }
