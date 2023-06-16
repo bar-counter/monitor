@@ -1,47 +1,50 @@
 .PHONY: test check clean build dist all
 #TOP_DIR := $(shell pwd)
 # can change by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
-ENV_DIST_VERSION:=v1.3.0
+ENV_DIST_VERSION:=v2.1.0
 ENV_DIST_MARK=
 
-ROOT_NAME ?= monitor
+ROOT_NAME?=monitor
 
+## run info start
 ENV_RUN_INFO_HELP_ARGS= -h
 ENV_RUN_INFO_ARGS=
+## run info end
+
+## build dist env start
 # change to other build entrance
 ENV_ROOT_BUILD_ENTRANCE = main.go
 ENV_ROOT_BUILD_BIN_NAME = $(ROOT_NAME)
 ENV_ROOT_BUILD_PATH = build
 ENV_ROOT_BUILD_BIN_PATH = $(ENV_ROOT_BUILD_PATH)/$(ENV_ROOT_BUILD_BIN_NAME)
 ENV_ROOT_LOG_PATH = log/
-
-# linux windows darwin list as: go tool dist list
-ENV_DIST_OS := linux
+# linux windows darwin  list as: go tool dist list
+ENV_DIST_GO_OS=linux
 # amd64 386
-ENV_DIST_ARCH := amd64
-ENV_DIST_OS_DOCKER ?= linux
-ENV_DIST_ARCH_DOCKER ?= amd64
+ENV_DIST_GO_ARCH=amd64
+# mark for dist and tag helper
+ENV_ROOT_MANIFEST_PKG_JSON?=package.json
+ENV_ROOT_MAKE_FILE?=Makefile
+ENV_ROOT_CHANGELOG_PATH?=CHANGELOG.md
+## build dist env end
 
+## go test MakeGoTest.mk start
 # ignore used not matching mode
 # set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
 ENV_ROOT_TEST_INVERT_MATCH ?= "vendor|go_fatal_error|robotn|shirou|go_robot"
 ifeq ($(OS),Windows_NT)
-ENV_ROOT_TEST_LIST ?= ./...
+ENV_ROOT_TEST_LIST?=./...
 else
-ENV_ROOT_TEST_LIST ?= $$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
+ENV_ROOT_TEST_LIST?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
 endif
 # test max time
-ENV_ROOT_TEST_MAX_TIME := 1
+ENV_ROOT_TEST_MAX_TIME:=1m
+## go test MakeGoTest.mk en
 
-# linux windows darwin  list as: go tool dist list
-ENV_DIST_GO_OS = linux
-# amd64 386
-ENV_DIST_GO_ARCH = amd64
-
-# include MakeDockerRun.mk for docker run
 include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
 include z-MakefileUtils/MakeGoMod.mk
+include z-MakefileUtils/MakeGoTest.mk
 include z-MakefileUtils/MakeGoDist.mk
 
 all: env
@@ -69,7 +72,6 @@ endif
 	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
 	@echo "== project env info end =="
 
-
 cleanBuild:
 	-@$(RM) -r ${ENV_ROOT_BUILD_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
@@ -89,7 +91,7 @@ cleanTestData:
 	@$(RM) -r **/**/**/**/**/**/testdata
 	$(info -> finish clean folder [ testdata ])
 
-clean: cleanBuild cleanTestData cleanLog
+clean: cleanTestData cleanBuild cleanLog
 	@echo "~> clean finish"
 
 cleanAll: clean cleanAllDist
@@ -121,37 +123,10 @@ examplePprof: dep
 	@echo "=> run dev example/pprof/pprofdemo"
 	@go run example/pprof/pprofdemo.go
 
-test:
-	@echo "=> run test start"
-ifeq ($(OS),Windows_NT)
-	@go test -test.v $(ENV_ROOT_TEST_LIST)
-else
-	@go test -test.v $(ENV_ROOT_TEST_LIST)
-endif
-
-testCoverage:
-	@echo "=> run test coverage start"
-ifeq ($(OS),Windows_NT)
-	@go test -cover -coverprofile coverage.txt -covermode count -coverpkg ./... -v $(ENV_ROOT_TEST_LIST)
-else
-	@go test -cover -coverprofile coverage.txt -covermode count -coverpkg ./... -v $(ENV_ROOT_TEST_LIST)
-endif
-
-testCoverageBrowser: testCoverage
-	@go tool cover -html=coverage.txt
-
-testBenchmark:
-	@echo "=> run test benchmark start"
-ifeq ($(OS),Windows_NT)
-	@go test -bench . -benchmem ./...
-else
-	@go test -bench . -benchmem -v $(ENV_ROOT_TEST_LIST)
-endif
-
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
-	@echo "-- now build name: $(ROOT_NAME) version: $(ENV_DIST_VERSION)"
-	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_DIST_GO_OS) $(ENV_DIST_GO_ARCH) --"
+	@echo "-- now build name: ${ROOT_NAME} version: ${ENV_DIST_VERSION}"
+	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
 	@echo "~> make env                 - print env of this project"
 	@echo "~> make init                - check base env of this project"
@@ -162,9 +137,7 @@ helpProjectRoot:
 	@echo "~> make testCoverageBrowser - see coverage at browser --invert-match by config"
 	@echo "~> make testBenchmark       - run go test benchmark case all"
 	@echo "~> make ci                  - run CI tools tasks"
-	@echo "~> make dev                 - run as develop mode"
-	@echo "~> make run                 - run as sample mode"
 
-help: helpGoMod helpDist helpProjectRoot
+help: helpGoMod helperGoTest helpDist helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoDist.mk --"
+	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoDist.mk --"
