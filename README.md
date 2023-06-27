@@ -40,6 +40,8 @@ support check
 | gin      | https://github.com/gin-gonic/gin    | v1.9.1  |
 | gopsutil | https://github.com/shirou/gopsutil/ | v3.23.5 |
 
+- `go 1.18`, `^1.18`, `1.18.10` to new go version for dev
+
 # demo
 
 ```bash

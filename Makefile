@@ -44,7 +44,9 @@ ENV_ROOT_TEST_MAX_TIME:=1m
 include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
 include z-MakefileUtils/MakeGoMod.mk
+include z-MakefileUtils/MakeGoList.mk
 include z-MakefileUtils/MakeGoTest.mk
+include z-MakefileUtils/MakeGoTestIntegration.mk
 include z-MakefileUtils/MakeGoDist.mk
 
 all: env
@@ -73,16 +75,18 @@ endif
 	@echo "== project env info end =="
 
 cleanBuild:
-	-@$(RM) -r ${ENV_ROOT_BUILD_PATH}
+	@$(RM) -r ${ENV_ROOT_BUILD_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
 
 cleanLog:
-	-@$(RM) -r ${ENV_ROOT_LOG_PATH}
+	@$(RM) -r ${ENV_ROOT_LOG_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
 
 cleanTestData:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
 	@$(RM) coverage.txt
+	@$(RM) coverage.out
+	@$(RM) profile.txt
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
 	@$(RM) -r **/**/**/testdata
@@ -138,6 +142,6 @@ helpProjectRoot:
 	@echo "~> make testBenchmark       - run go test benchmark case all"
 	@echo "~> make ci                  - run CI tools tasks"
 
-help: helpGoMod helperGoTest helpDist helpProjectRoot
+help: helpGoMod helpGoTest helpGoDist helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoDist.mk --"
+	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoTestIntegration.mk MakeGoDist.mk MakeDockerRun.mk MakeGoAction.mk --"
