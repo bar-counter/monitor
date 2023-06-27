@@ -3,6 +3,8 @@
 [![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor?ref=badge_shield)
+[![github release](https://img.shields.io/github/v/release/bar-counter/monitor?style=social)](https://github.com/bar-counter/monitor/releases)
+
 
 <!-- TOC -->
 
