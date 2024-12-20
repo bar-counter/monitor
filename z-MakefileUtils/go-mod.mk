@@ -1,8 +1,16 @@
-## for golang test task
-# include z-MakefileUtils/MakeGoMod.mk
+## for golang go.mod task
+#include z-MakefileUtils/go-go.mod.mk
+#
+# and add dep as
+#dep: go.mod.verify go.mod.download go.mod.tidy
+#
+#style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run
+#
+#ci: style go.mod.vet test
+
 # windows use must install tools
-# https://scoop.sh/#/apps?q=gow&s=0&d=1&o=true
-# scoop install gow
+# https://scoop.sh/#/apps?q=busybox&s=0&d=1&o=true
+# scoop install main/busybox
 
 checkEnvGOPATH:
 ifndef GOPATH
@@ -10,7 +18,10 @@ ifndef GOPATH
 	exit 1
 endif
 
-modFetch:
+ENV_GO_PATH=$(shell go env GOPATH)
+
+.PHONY: go.mod.fetch
+go.mod.fetch:
 	@echo "-> can fetch last version github.com/gin-gonic/gin as"
 	@echo "go list -mod readonly -m -versions github.com/gin-gonic/gin | awk '{print \044\061 \042 lastest: \042 \044\0116\0106 }'"
 	@echo ""
@@ -21,48 +32,60 @@ else
 	@go list -mod mod -m -versions github.com/stretchr/testify | awk '{print $$1 " lastest: " $$NF }'
 endif
 
-modName:
+.PHONY: go.mod.name
+go.mod.name:
 ifeq ($(OS),Windows_NT)
 	@echo "-> this package go mod name: $(subst module ,,$(shell head -n 1 go.mod))"
 else
 	@echo "-> this package go mod name: $(subst module ,,$(shell head -n 1 go.mod))"
 endif
 
-modClean:
+.PHONY: go.mod.clean
+go.mod.clean:
 	@echo "=> try to clean: go.sum vendor/"
 	@$(RM) go.sum
 	@$(RM) -r vendor/
 	@echo "=> finish clean: go.sum vendor/"
 
-modList:
+.PHONY: go.mod.list
+go.mod.list:
 	$(info show go list -mod readonly -json all)
 	@go list -mod readonly -json all
 
-modGraphDependencies:
+.PHONY: go.mod.graph.dependencies
+go.mod.graph.dependencies:
 	@go mod graph
 
-modVerify:
+.PHONY: go.mod.verify
+go.mod.verify:
 	@go mod verify
 
-modTidy:
+.PHONY: go.mod.tidy
+go.mod.tidy:
 	@go mod tidy -v
 
-modDownload:
+.PHONY: go.mod.download
+go.mod.download:
 	@go mod download -x
 
-modVendor:
+.PHONY: go.mod.vendor
+go.mod.vendor:
 	@go mod vendor
 
-modFmt:
+.PHONY: go.mod.fmt
+go.mod.fmt:
 	@go fmt -x ./...
 
-modVet:
+.PHONY: go.mod.vet
+go.mod.vet:
 	@go vet ./...
 
-modWhy:
+.PHONY: go.mod.why
+go.mod.why:
 	@go mod why ./...
 
-modCiLintInstall:
+.PHONY: go.mod.ci.lint.install
+go.mod.ci.lint.install:
 	$(info go lint tools use: https://golangci-lint.run/)
 ifeq ($(OS),Windows_NT)
 	@echo "scoop install main/golangci-lint"
@@ -78,22 +101,23 @@ endif
 endif
 	golangci-lint --version
 
-
-modLintRun:
-	@echo "-> if run error try fix: make modCiLintInstall"
+.PHONY: go.mod.lint.run
+go.mod.lint.run:
+	@echo "-> if run error try fix: make go.mod.ci.lint.install"
+	@golangci-lint --version
 	golangci-lint run -c .golangci.yaml
 
-helpGoMod:
+.PHONY: help.go.mod
+help.go.mod:
 	@echo "Help: MakeGoMod.mk"
 	@echo "-> go mod document at: https://go.dev/ref/mod"
 	@echo "this project use go mod, so golang version must 1.12+"
-	@echo "~> make modName              - will show this go mod name"
-	@echo "~> make modClean             - will clean ./go.sum and ./vendor"
-	@echo "~> make modList              - list all depends as: go list -m -json all"
-	@echo "~> make modGraphDependencies - see depends graph of this project"
-	@echo "~> make modVerify            - verify as: go mod verify"
-	@echo "~> make modDownload          - download as: go mod download and go mod vendor"
-	@echo "~> make modTidy              - tidy depends graph of project as go mod tidy"
-	@echo "~> make dep                  - check depends of project and download all, parent task is: modVerify modDownload"
-	@echo "~> make modFetch             - check last version of one lib"
+	@echo "~> make go.mod.name                  - will show this go mod name"
+	@echo "~> make go.mod.clean                 - will clean ./go.sum and ./vendor"
+	@echo "~> make go.mod.list                  - list all depends as: go list -m -json all"
+	@echo "~> make go.mod.graph.dependencies    - see depends graph of this project"
+	@echo "~> make go.mod.verify                - verify as: go mod verify"
+	@echo "~> make go.mod.download              - download as: go mod download and go mod vendor"
+	@echo "~> make go.mod.tidy                  - tidy depends graph of project as go mod tidy"
+	@echo "~> make go.mod.fetch                 - check last version of one lib"
 	@echo ""
