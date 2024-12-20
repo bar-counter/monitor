@@ -24,7 +24,9 @@ Issues will be closed and tagged as `[wontfix]` if we decide that we do not wish
 
 If you're ready to contribute, new issues click here [issues/new/choose](../../../../issues/new/choose)
 
-> if this repo has opend issues, start by looking at our open issues tagged as [`help wanted`](../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"help+wanted") or [`good first issue`](../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"good+first+issue").
+> if this repo has opened issues, start by looking at our open issues tagged
+> as [`help wanted`](../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"help+wanted")
+> or [`good first issue`](../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"good+first+issue").
 
 You can comment on the issue to let others know you're interested in working on it or to ask questions.
 
@@ -38,17 +40,17 @@ You can comment on the issue to let others know you're interested in working on 
 
 4. git commit use [https://www.conventionalcommits.org/](https://www.conventionalcommits.org/)
 
-  - Can use command tools as: [cz-cli](https://github.com/commitizen/cz-cli#conventional-commit-messages-as-a-global-utility)
+- Can use command tools as: [cz-cli](https://github.com/commitizen/cz-cli#conventional-commit-messages-as-a-global-utility)
 
 ![](https://github.com/commitizen/cz-cli/raw/master/meta/screenshots/add-commit.png)
 
-  - vscode plugin `Conventional Commits`  [https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+- vscode plugin `Conventional Commits`  [https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
 
 `Command + Shift + P` or `Ctrl + Shift + P` enter `Conventional Commits` or `cc `, and press `Enter`
 
 ![](https://github.com/vivaxy/vscode-conventional-commits/raw/HEAD/assets/docs/demo.gif)
 
-  - jetbrains IDE can use `Conventional Commit` [https://plugins.jetbrains.com/plugin/13389-conventional-commit](https://plugins.jetbrains.com/plugin/13389-conventional-commit)
+- jetbrains IDE can use `Conventional Commit` [https://plugins.jetbrains.com/plugin/13389-conventional-commit](https://plugins.jetbrains.com/plugin/13389-conventional-commit)
 
 ![https://plugins.jetbrains.com/files/13389/screenshot_21408.png](https://plugins.jetbrains.com/files/13389/screenshot_21408.png)
 

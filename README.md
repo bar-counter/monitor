@@ -1,10 +1,12 @@
 [![golang-ci](https://github.com/bar-counter/monitor/actions/workflows/golang-ci.yml/badge.svg)](https://github.com/bar-counter/monitor/actions/workflows/golang-ci.yml)
-[![go mod version](https://img.shields.io/github/go-mod/go-version/bar-counter/monitor?label=go.mod)](https://github.com/bar-counter/monitor)
-[![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor/)
-[![GoReportCard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbar-counter%2Fmonitor?ref=badge_shield)
-[![github release](https://img.shields.io/github/v/release/bar-counter/monitor?style=social)](https://github.com/bar-counter/monitor/releases)
 
+[![go mod version](https://img.shields.io/github/go-mod/go-version/bar-counter/monitor?label=go.mod)](https://github.com/bar-counter/monitor)
+[![GoDoc](https://godoc.org/github.com/bar-counter/monitor?status.png)](https://godoc.org/github.com/bar-counter/monitor)
+[![goreportcard](https://goreportcard.com/badge/github.com/bar-counter/monitor)](https://goreportcard.com/report/github.com/bar-counter/monitor)
+
+[![GitHub license](https://img.shields.io/github/license/bar-counter/monitor)](https://github.com/bar-counter/monitor)
+[![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/bar-counter/monitor)](https://github.com/bar-counter/monitor/tags)
+[![GitHub release)](https://img.shields.io/github/v/release/bar-counter/monitor)](https://github.com/bar-counter/monitor/releases)
 
 <!-- TOC -->
 
@@ -46,6 +48,17 @@ support check
 |:---------|:------------------------------------|:--------|
 | gin      | https://github.com/gin-gonic/gin    | v1.9.1  |
 | gopsutil | https://github.com/shirou/gopsutil/ | v3.23.5 |
+
+## Contributing
+
+[![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4-ff69b4.svg)](.github/CONTRIBUTING_DOC/CODE_OF_CONDUCT.md)
+[![GitHub contributors](https://img.shields.io/github/contributors/bar-counter/monitor)](https://github.com/bar-counter/monitor/graphs/contributors)
+
+We welcome community contributions to this project.
+
+Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
+
+请阅读有关 [贡献者指南](.github/CONTRIBUTING_DOC/zh-CN/CONTRIBUTING.md) 以获取更多如何入门的信息
 
 # demo
 
