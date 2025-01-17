@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [3.1.0](https://github.com/bar-counter/monitor/compare/3.0.0...v3.1.0) (2025-01-17)
+
+### ✨ Features
+
+* upgrade to monitor package v3 ([8e634714](https://github.com/bar-counter/monitor/commit/8e63471479b1eaaaa7bbf72d9c59e6b64806aa6c))
+
 ## [3.0.0](https://github.com/bar-counter/monitor/compare/2.3.0...v3.0.0) (2025-01-17)
 
 ### ✨ Features
