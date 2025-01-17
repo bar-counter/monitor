@@ -1,9 +1,9 @@
 package monitor
 
 import (
-	"github.com/bar-counter/monitor/v2/debug"
-	"github.com/bar-counter/monitor/v2/pprof"
-	"github.com/bar-counter/monitor/v2/status"
+	"github.com/bar-counter/monitor/v3/debug"
+	"github.com/bar-counter/monitor/v3/pprof"
+	"github.com/bar-counter/monitor/v3/status"
 	"github.com/gin-gonic/gin"
 )
 

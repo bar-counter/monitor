@@ -88,14 +88,14 @@ make examplePprof
 
 ```bash
 # go get
-go get -v github.com/bar-counter/monitor/v2
+go get -v github.com/bar-counter/monitor/v3
 
 # go mod find out version
-go list -mod readonly -m -versions github.com/bar-counter/monitor/v2
+go list -mod readonly -m -versions github.com/bar-counter/monitor/v3
 # all use awk to get script
 echo "go mod edit -require=$(go list -m -versions github.com/bar-counter/monitor | awk '{print $1 "@" $NF}')"
 # then use your want version like v2.1.0
-go mod edit -require=github.com/bar-counter/monitor/v2@v2.1.0
+go mod edit -require=github.com/bar-counter/monitor/v3@v2.1.0
 go mod download -x
 ```
 
@@ -110,7 +110,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor/v2"
+	"github.com/bar-counter/monitor/v3"
 	"github.com/gin-gonic/gin"
 )
 
@@ -169,7 +169,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor/v2"
+	"github.com/bar-counter/monitor/v3"
 	"github.com/gin-gonic/gin"
 )
 
@@ -256,7 +256,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bar-counter/monitor/v2"
+	"github.com/bar-counter/monitor/v3"
 	"github.com/gin-gonic/gin"
 )
 

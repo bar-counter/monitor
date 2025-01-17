@@ -6,7 +6,7 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"github.com/bar-counter/monitor/v2"
+	"github.com/bar-counter/monitor/v3"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
