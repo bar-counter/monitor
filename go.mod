@@ -1,4 +1,4 @@
-module github.com/bar-counter/monitor/v2
+module github.com/bar-counter/monitor/v3
 
 go 1.21.0
 
