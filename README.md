@@ -39,8 +39,8 @@ support check
 
 ## env
 
-- minimum go version: go 1.20
-- change `go 1.20`, `^1.20`, `1.20.14` to new go version
+- minimum go version: go 1.21
+- change `go 1.21`, `^1.21`, `1.23.4` to new go version
 
 ### libs
 

@@ -8,7 +8,7 @@ ROOT_NAME?=monitor
 
 ## MakeDocker.mk settings start
 ROOT_OWNER ?=sinlov
-ROOT_PARENT_SWITCH_TAG =1.20.14
+ROOT_PARENT_SWITCH_TAG =1.23.4
 # for image local build
 INFO_TEST_BUILD_DOCKER_PARENT_IMAGE =golang
 # for image running
