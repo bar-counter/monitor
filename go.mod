@@ -6,7 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/shirou/gopsutil/v4 v4.25.1
+	github.com/shirou/gopsutil/v4 v4.25.2
 )
 
 require (
