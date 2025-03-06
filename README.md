@@ -94,8 +94,8 @@ go get -v github.com/bar-counter/monitor/v3
 go list -mod readonly -m -versions github.com/bar-counter/monitor/v3
 # all use awk to get script
 echo "go mod edit -require=$(go list -m -versions github.com/bar-counter/monitor | awk '{print $1 "@" $NF}')"
-# then use your want version like v2.1.0
-go mod edit -require=github.com/bar-counter/monitor/v3@v2.1.0
+# then use your want version like v3.0.0
+go mod edit -require=github.com/bar-counter/monitor/v3@v3.0.0
 go mod download -x
 ```
 
