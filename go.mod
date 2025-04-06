@@ -1,11 +1,11 @@
 module github.com/bar-counter/monitor/v3
 
 go 1.21.0
-toolchain go1.23.4
+toolchain go1.24.1
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/shirou/gopsutil/v4 v4.25.2
+	github.com/shirou/gopsutil/v4 v4.25.3
 )
 
 require (
